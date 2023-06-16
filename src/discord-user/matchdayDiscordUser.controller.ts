@@ -32,7 +32,8 @@ export class MatchdayDiscordUserController {
     private readonly configService: ConfigService,
   ) {}
 
-  @Post('/matchday/verify-command')
+  // @Post('/matchday/verify-command'
+  @Post('/verified-role')
   @HttpCode(200)
   async verifyCommand(
     @Body() body: DiscordInteractionPayload,
@@ -41,6 +42,7 @@ export class MatchdayDiscordUserController {
     @Res() res,
   ) {
     // Your public key can be found on your application in the Developer Portal
+    console.log('ENTERED VERIFY COMMAND');
     const PUBLIC_KEY =
       this.matchdayDiscordUserService.getDiscordApplicationCredentials().public_key;
 
@@ -55,6 +57,7 @@ export class MatchdayDiscordUserController {
       );
 
       if (!isVerified) {
+        console.log('NOT VERIFIED');
         return res.status(HttpStatus.UNAUTHORIZED).send('invalid request signature');
       }
 
@@ -91,6 +94,8 @@ export class MatchdayDiscordUserController {
     if (headers['authorization'] !== this.configService.get('helius.webhookKey')) {
       throw new HttpException('Forbidden', HttpStatus.UNAUTHORIZED);
     }
+
+    console.log('ENTERED MATCHDAY WEBHOOK');
 
     const { type, signature } = body[0];
 

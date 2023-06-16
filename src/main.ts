@@ -25,6 +25,8 @@ async function bootstrap() {
   const host = configService.get('app.host');
   const port = configService.get('app.port');
 
+  console.log(`Listening on ${host}:${port}`);
+
   if (host) {
     await app.listen(port, host);
   } else {

@@ -9,7 +9,7 @@ import { MatchdayDiscordUser } from './entities/MatchdayDiscordUser.entity';
 
 // You figure this ID out by passing a Solana NFT into this API: https://simplehash.readme.io/reference/nft-by-token_id-1
 // and seeing what collection id gets returned
-const SIMPLEHASH_CHALLENGE_PASS_COLLECTION_ID = '220efa958c716cd8ad1788d07861e511';
+const SIMPLEHASH_CHALLENGE_PASS_COLLECTION_ID = '278fc6d25b7d7abff56fe790829e749e'; //Dean's List collection ID
 
 function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -68,20 +68,24 @@ export class MatchdayDiscordUserService {
       })
     ).json();
 
-    const MATCHDAY_API_URL = `https://discordapi.matchday.com/verify/${discordResponse.id}`;
-    const matchdayResponse = await (
-      await fetch(MATCHDAY_API_URL, {
-        method: 'GET',
-        headers: {
-          auth: process.env.MATCHDAY_API_KEY!,
-        },
-      })
-    ).json();
+    // CUSTOM API CALL TO MATCHDAY (NEED EDITING FOR DEANS LIST)
 
-    const { twitterFollow, matchdayUsername, userName } = matchdayResponse.data;
+    // const MATCHDAY_API_URL = `https://discordapi.matchday.com/verify/${discordResponse.id}`;
+    // const matchdayResponse = await (
+    //   await fetch(MATCHDAY_API_URL, {
+    //     method: 'GET',
+    //     headers: {
+    //       auth: process.env.MATCHDAY_API_KEY!,
+    //     },
+    //   })
+    // ).json();
+
+    // const { twitterFollow, matchdayUsername, userName } = matchdayResponse.data;
+    const matchdayUsername = discordResponse.username;
 
     // twitterFollow == true and the existence of the username mean both a Twitter follow and Discord connection
-    return { matchdayUsername, socialFollow: twitterFollow && !!userName };
+    // return { matchdayUsername, socialFollow: twitterFollow && !!userName };
+    return { matchdayUsername, socialFollow: true };
   }
 
   async getMetadataForUser(publicKey: PublicKey, accessToken: string) {
@@ -102,6 +106,7 @@ export class MatchdayDiscordUserService {
   }
 
   async getAccessTokenWithRefreshToken(refreshToken: string) {
+    console.log('refreshing token');
     const { client_id, client_secret } = this.getDiscordApplicationCredentials();
     const body = new URLSearchParams({
       client_id,
@@ -201,7 +206,8 @@ export class MatchdayDiscordUserService {
           'content-type': 'application/json',
         },
         body: JSON.stringify({
-          platform_name: 'Matchday',
+          // platform_name: 'Matchday',
+          platform_name: 'Testing Ground', //Edit this to the correct platform name
           platform_username,
           metadata,
         }),
