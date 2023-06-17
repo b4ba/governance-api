@@ -26,6 +26,7 @@ async function bootstrap() {
   const port = configService.get('app.port');
 
   console.log(`Listening on ${host}:${port}`);
+  console.log(`GraphQL Playground: ${host}:${port}/playground/`);
 
   if (host) {
     await app.listen(port, host);
