@@ -3,9 +3,9 @@ import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify
 import AltairFastify from 'altair-fastify-plugin';
 import MercuriusGQLUpload from 'mercurius-upload';
 
-import { AppModule } from './app.module';
+import { AppModule } from '@src/app.module';
 
-import { ConfigService } from './config/config.service';
+import { ConfigService } from '@src/config/config.service';
 
 async function bootstrap() {
   const fastifyAdapter = new FastifyAdapter();
