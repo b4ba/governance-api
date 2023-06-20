@@ -32,8 +32,7 @@ export class MatchdayDiscordUserController {
     private readonly configService: ConfigService,
   ) {}
 
-  // @Post('/matchday/verify-command'
-  @Post('/verified-role')
+  @Post('/matchday/verify-command')
   @HttpCode(200)
   async verifyCommand(
     @Body() body: DiscordInteractionPayload,

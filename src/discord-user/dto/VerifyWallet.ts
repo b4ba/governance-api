@@ -20,4 +20,6 @@ export class VerifyWallet {
     description: 'Status of the connection between the Discord user and the wallet',
   })
   publicKey: PublicKey;
+  @Field(() => String, { description: 'The project the claim is for' })
+  project: string;
 }
